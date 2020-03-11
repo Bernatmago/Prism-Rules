@@ -1,7 +1,5 @@
-# SEL-MAI
-Supervised learning labs
-
-17 mod 4 is 1 which means PRISM algorithm
+# PRISM ALGORITHM
+Supervised learning labs for the MAI-UPC Master
 
 Datasets
 * Mushroom: https://datahub.io/machine-learning/mushroom
