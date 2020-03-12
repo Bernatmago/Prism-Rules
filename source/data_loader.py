@@ -23,6 +23,6 @@ def load_data(filename):
 # Small 0-500
 if __name__ == "__main__":
     X, y, names = load_data('mushroom.csv')
-    X, y, ames = load_data('divorce.csv')
+    X, y, names = load_data('divorce.csv')
     X, y, names = load_data('student_performance.arff')
     print(1)

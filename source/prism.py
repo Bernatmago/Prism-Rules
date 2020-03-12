@@ -8,12 +8,13 @@ class Prism:
         self.y = np.zeros(0)
         self.X_names = {}
         self.y_names = []
+        self.rules = []
         pass
 
     def __get_names(self, names):
         for i, v in enumerate(names[:-1]):
             self.X_names[v + '__' + str(i)] = np.unique(self.X[:, i])
-            self.y_names = np.unique(X[:, -1])
+            self.y_names = np.unique(self.X[:, -1])
 
     def __best_subset(self, cls, idx_sub):
         max_prob = 0
@@ -27,7 +28,7 @@ class Prism:
                 if np.count_nonzero(self.y[v_idx] == cls) == 0:
                     prob = 0
                 else:
-                    prob = np.count_nonzero(y[v_idx] == cls) / v_idx.shape[0]
+                    prob = np.count_nonzero(self.y[v_idx] == cls) / v_idx.shape[0]
                 if prob > max_prob or (prob == max_prob and len(v_idx) > len(v_idx)):
                     max_prob = prob
                     max_idx = np.copy(v_idx)
@@ -41,7 +42,7 @@ class Prism:
             idx_sub, best_attr = self.__best_subset(cls, idx_sub)
             rule.append(best_attr)
         idx_train = np.setdiff1d(idx_train, idx_sub)
-        return idx_train, ' ^  '.join(rule)
+        return idx_train, rule
 
     def __class_rules(self, cls):
         idx_train = np.arange(self.X.shape[0])
@@ -55,14 +56,31 @@ class Prism:
     def fit(self, X, y, names):
         self.X = X
         self.y = y
+        self.rules = {}
         self.__get_names(names)
 
         for cls in self.y_names:
-            rules = self.__class_rules(cls)
-            print(rules)
+            self.rules[cls] = self.__class_rules(cls)
+
+    def __rule_intersection(self, l1, l2):
+        return [v for v in l1 if v in l2]
+
+    def __predict_sample(self, sample):
+        # names
+        sample = [n.split('__')[0] + '=' + v for n, v in zip(self.X_names.keys(), sample)]
+        for cls in self.y_names:
+            for rule in self.rules[cls]:
+                a = self.__rule_intersection(rule, sample)
+                if len(a) == len(rule):
+                    return cls
+        return 'unknown'
+
+    def predict(self, X):
+        return np.apply_along_axis(self.__predict_sample, axis=1, arr=X)
 
 
 if __name__ == '__main__':
     X, y, names = load_data('mushroom.csv')
     p = Prism()
-    p.fit(X, y, names)
+    p.fit(X[:-10,:], y[:-10], names)
+    p = p.predict(X[-10:,:])
