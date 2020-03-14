@@ -75,7 +75,7 @@ class Prism:
             self.rules[cls] = self.__class_rules(cls)
 
     def predict(self, X):
-        return np.apply_along_axis(self.__predict_sample, axis=1, arr=X)
+        return [self.__predict_sample(x) for x in X]
 
     def __str__(self):
         out = ""
@@ -102,4 +102,4 @@ if __name__ == '__main__':
     p = Prism()
     p.fit(X[:-10, :], y[:-10], names)
     print(p)
-    # p = p.predict(X[-10:,:])
+    p = p.predict(X[-10:,:])
