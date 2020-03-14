@@ -8,7 +8,7 @@ class Prism:
         self.y = np.zeros(0)
         self.X_names = {}
         self.y_names = []
-        self.rules = []
+        self.rules = {}
         pass
 
     def __get_names(self, names):
@@ -53,6 +53,18 @@ class Prism:
             cls_rules.append(rule)
         return cls_rules
 
+    def __rule_intersection(self, l1, l2):
+        return [v for v in l1 if v in l2]
+
+    def __predict_sample(self, sample):
+        sample = [n.split('__')[0] + '=' + v for n, v in zip(self.X_names.keys(), sample)]
+        for cls in self.y_names:
+            for rule in self.rules[cls]:
+                a = self.__rule_intersection(rule, sample)
+                if len(a) == len(rule):
+                    return cls
+        return 'unknown'
+
     def fit(self, X, y, names):
         self.X = X
         self.y = y
@@ -62,25 +74,32 @@ class Prism:
         for cls in self.y_names:
             self.rules[cls] = self.__class_rules(cls)
 
-    def __rule_intersection(self, l1, l2):
-        return [v for v in l1 if v in l2]
-
-    def __predict_sample(self, sample):
-        # names
-        sample = [n.split('__')[0] + '=' + v for n, v in zip(self.X_names.keys(), sample)]
-        for cls in self.y_names:
-            for rule in self.rules[cls]:
-                a = self.__rule_intersection(rule, sample)
-                if len(a) == len(rule):
-                    return cls
-        return 'unknown'
-
     def predict(self, X):
         return np.apply_along_axis(self.__predict_sample, axis=1, arr=X)
 
+    def __str__(self):
+        out = ""
+        if len(self.rules.keys()) == 0:
+            return "No rules generated"
+        else:
+            for k, v in self.rules.items():
+                out = out + "-------------Rules for class " + k + "-------------\n"
+                for i, r in enumerate(v):
+                    if i == 15:
+                        print(1)
+                    out = out + str(i + 1) + ". "
+                    for ii, c in enumerate(sorted(r, key=len)):
+                        if ii < len(r) - 1:
+                            out = out + c + " and "
+                        else:
+                            out = out + c + "\n"
+                out = out + "\n\n"
+            return out
+
 
 if __name__ == '__main__':
-    X, y, names = load_data('mushroom.csv')
+    X, y, names = load_data('divorce.csv')
     p = Prism()
-    p.fit(X[:-10,:], y[:-10], names)
-    p = p.predict(X[-10:,:])
+    p.fit(X[:-10, :], y[:-10], names)
+    print(p)
+    # p = p.predict(X[-10:,:])
