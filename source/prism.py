@@ -13,9 +13,9 @@ class Prism:
         pass
 
     def __get_names(self, names):
-        for i, v in enumerate(names[:-1]):
+        for i, v in enumerate(names):
             self.X_names[v + '__' + str(i)] = np.unique(self.X[:, i])
-            self.y_names = np.unique(self.X[:, -1])
+            self.y_names = np.unique(self.y)
 
     def __best_subset(self, cls, idx_sub):
         max_prob = 0
