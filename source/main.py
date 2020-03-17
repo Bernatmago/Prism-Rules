@@ -9,6 +9,6 @@ for dataset in ['mushroom.csv', 'divorce.csv', 'student_performance.arff']:
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
     prism = Prism()
     prism.fit(X_train, y_train, names)
-    preds = prism.predict(X_test)
+    preds = prism.predict(X_test, y_test)
     print(prism)
     print(classification_report(y_test, preds))
