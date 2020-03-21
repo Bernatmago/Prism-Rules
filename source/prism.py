@@ -92,8 +92,6 @@ class Prism:
             for k, v in self.rules.items():
                 out += "-------------Rules for class " + k + "-------------\n"
                 for i, r in enumerate(v):
-                    if i == 15:
-                        print(1)
                     out += str(i + 1) + ". "
                     for ii, c in enumerate(sorted(r, key=len)):
                         if ii < len(r) - 1:

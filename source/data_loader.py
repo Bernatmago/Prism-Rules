@@ -20,5 +20,4 @@ def load_data(filename, pred_idx=-1):
 if __name__ == "__main__":
     X, y, names = load_data('mushroom.csv', -1)
     X, y, names = load_data('divorce.csv', -1)
-    X, y, names = load_data('student_performance.arff', 5)
     print(1)
