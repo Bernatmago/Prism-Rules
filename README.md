@@ -6,7 +6,7 @@ Datasets used:
 * Tic-Tac-Toe Endgame: https://archive.ics.uci.edu/ml/datasets/Tic-Tac-Toe+Endgame
 * Divorce: https://archive.ics.uci.edu/ml/datasets/Divorce+Predictors+data+set
 
-Thhe algorithm is contained into the Prism class.
+The algorithm is contained into the Prism class.
 
 Example:
 ```python
