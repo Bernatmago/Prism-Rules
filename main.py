@@ -1,7 +1,9 @@
-from data_loader import load_data
-from prism import Prism
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
+
+from source.data_loader import load_data
+from source.prism import Prism
+
 
 if __name__ == '__main__':
     for (dataset, cls_idx) in [('mushroom.csv', -1), ('divorce.csv', -1), ('tic_tac_toe.csv', -1)]:
